@@ -5,6 +5,7 @@ import App from './App.tsx'
 import { AuthProvider } from './contexts/auth-context.tsx'
 import { queryClient } from './services/query-client.ts'
 import { QueryClientProvider } from '@tanstack/react-query'
+import '../i18n/i18n'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

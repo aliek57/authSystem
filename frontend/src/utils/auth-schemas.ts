@@ -1,0 +1,24 @@
+import { z } from 'zod';
+import { type TFunction } from 'i18next';
+
+export const getAuthSchemas = (t: TFunction) => {
+  const loginSchema = z.object({
+    email: z.string().email(t('validation.email')),
+    password: z.string().min(6, { message: t('validation.password') }),
+  });
+
+  const registerSchema = z.object({
+    name: z.string().min(3, { message: t('validation.name') }),
+    email: z.string().email(t('validation.email')),
+    password: z.string().min(6, { message: t('validation.password') }),
+    confirm_password: z.string().min(6, { message: t('validation.confirm_password') }),
+  }).refine((data) => data.password === data.confirm_password, {
+    message: t('validation.confirm_password'),
+    path: ["confirm_password"],
+  });
+
+  return { loginSchema, registerSchema };
+};
+
+export type LoginFormData = z.infer<ReturnType<typeof getAuthSchemas>['loginSchema']>;
+export type RegisterFormData = z.infer<ReturnType<typeof getAuthSchemas>['registerSchema']>;

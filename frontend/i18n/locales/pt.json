@@ -1,0 +1,44 @@
+{
+    "dashboard": {
+        "title": "Painel de Controle",
+        "welcome": "Bem-vindo ao Painel de Controle"
+    },
+    "generic_error": {
+        "title": "Parece que alguma coisa deu errado. Por favor, tente novamente mais tarde."
+    },
+    "login": {
+        "title": "Página de Acesso",
+        "email": "E-mail",
+        "password": "Senha",
+        "button": "Entrar",
+        "text": "Não tem uma conta? ",
+        "redirect_register": "Cadastre-se aqui",
+        "loading": "Carregando..."
+    },
+    "register": {
+        "title": "Página de Registro",
+        "email": "E-mail",
+        "password": "Senha",
+        "button": "Registrar",
+        "text": "Já tem uma conta? ",
+        "redirect_login": "Entre aqui",
+        "loading": "Carregando..."
+    },
+    "validation": {
+        "email": "Por favor, insira um e-mail válido.",
+        "password": "A senha deve ter pelo menos 6 caracteres.",
+        "required": "Este campo é obrigatório.",
+        "name": "O nome deve ter pelo menos 3 caracteres.",
+        "confirm_password": "As senhas não coincidem."
+    },
+    "not-logged": {
+        "title": "Você não está logado"
+    },
+    "notifications": {
+        "login_success": "Login realizado com sucesso!",
+        "register_success": "Conta criada com sucesso!",
+        "logout_success": "Você saiu da conta.",
+        "delete_success": "Conta excluída permanentemente.",
+        "error_generic": "Ocorreu um erro no servidor."
+    }
+}
