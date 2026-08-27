@@ -7,7 +7,9 @@
         "button_logout": "Sair da Conta"
     },
     "generic_error": {
-        "title": "Parece que alguma coisa deu errado. Por favor, tente novamente mais tarde."
+        "title": "Parece que algo deu errado",
+        "description": "Não foi possível conectar ao servidor ou ocorreu um erro inesperado. Tente novamente mais tarde.",
+        "button": "Voltar para a Página Inicial"
     },
     "login": {
         "title": "Página de Acesso",
@@ -33,9 +35,6 @@
         "required": "Este campo é obrigatório.",
         "name": "O nome deve ter pelo menos 3 caracteres.",
         "confirm_password": "As senhas não coincidem."
-    },
-    "not-logged": {
-        "title": "Você não está logado"
     },
     "notifications": {
         "login_success": "Login realizado com sucesso!",
