@@ -6,6 +6,7 @@ import { NotLogged } from './pages/not-logged';
 import { Login } from './pages/login';
 import { Dashboard } from './pages/dashboard';
 import { Register } from './pages/register';
+import { EditProfile } from './pages/edit-profile';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

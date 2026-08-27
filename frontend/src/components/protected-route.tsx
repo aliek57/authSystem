@@ -13,7 +13,7 @@ export function ProtectedRoute() {
   }
 
   if (!user) {
-    return <Navigate to="/not-logged" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;

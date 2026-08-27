@@ -67,3 +67,17 @@ export function useDeleteAccountMutation() {
     }
   });
 }
+
+export function useUpdateProfileMutation() {
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: authService.updateProfile,
+    onSuccess: () => {
+      toast.success(t('notifications.update_success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.message || t('notifications.error_generic'));
+    }
+  });
+}

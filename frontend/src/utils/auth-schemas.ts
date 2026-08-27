@@ -17,8 +17,13 @@ export const getAuthSchemas = (t: TFunction) => {
     path: ["confirm_password"],
   });
 
-  return { loginSchema, registerSchema };
+  const updateProfileSchema = z.object({
+    name: z.string().min(3, { message: t('validation.name') }),
+  });
+
+  return { loginSchema, registerSchema, updateProfileSchema };
 };
 
 export type LoginFormData = z.infer<ReturnType<typeof getAuthSchemas>['loginSchema']>;
 export type RegisterFormData = z.infer<ReturnType<typeof getAuthSchemas>['registerSchema']>;
+export type UpdateProfileFormData = z.infer<ReturnType<typeof getAuthSchemas>['updateProfileSchema']>;

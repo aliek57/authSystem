@@ -1,7 +1,10 @@
 {
     "dashboard": {
-        "title": "Painel de Controle",
-        "welcome": "Bem-vindo ao Painel de Controle"
+        "title": "Meu Perfil",
+        "name": "Nome",
+        "email": "E-mail",
+        "button_edit": "Editar Perfil",
+        "button_logout": "Sair da Conta"
     },
     "generic_error": {
         "title": "Parece que alguma coisa deu errado. Por favor, tente novamente mais tarde."
@@ -39,6 +42,30 @@
         "register_success": "Conta criada com sucesso!",
         "logout_success": "Você saiu da conta.",
         "delete_success": "Conta excluída permanentemente.",
+        "update_success": "Perfil atualizado com sucesso!",
         "error_generic": "Ocorreu um erro no servidor."
+    },
+    "modals": {
+        "logout": {
+            "title": "Tem certeza que deseja sair?",
+            "description": "Você será desconectado da sua conta.",
+            "confirm": "Sair",
+            "cancel": "Cancelar"
+        },
+        "delete_account": {
+            "title": "Tem certeza que deseja excluir sua conta?",
+            "description": "Esta ação é irreversível e todos os seus dados serão perdidos.",
+            "confirm": "Excluir",
+            "cancel": "Cancelar"
+        }
+    },
+    "edit_profile": {
+        "title": "Editar Perfil",
+        "change_photo": "Alterar Foto",
+        "remove_photo": "Remover Foto",
+        "button_save": "Salvar Alterações",
+        "button_delete": "Excluir Conta",
+        "button_back": "Voltar",
+        "loading": "Salvando alterações..."
     }
 }

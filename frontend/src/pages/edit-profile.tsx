@@ -1,0 +1,188 @@
+import { useState, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, Link } from 'react-router-dom';
+import { Camera, Trash2, ArrowLeft, Loader2 } from 'lucide-react';
+import { getAuthSchemas, type UpdateProfileFormData } from '../utils/auth-schemas';
+import { useAuth } from '../hooks/use-auth';
+import { useUpdateProfileMutation, useDeleteAccountMutation } from '../hooks/use-auth-mutations';
+import { GlowCard } from '../components/glow-card';
+import { Modal } from '../components/modal';
+
+export function EditProfile() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { updateProfileSchema } = getAuthSchemas(t);
+  
+  const updateMutation = useUpdateProfileMutation();
+  const deleteMutation = useDeleteAccountMutation();
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(user?.photoURL || null);
+  const [removePhoto, setRemovePhoto] = useState(false);
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors } 
+  } = useForm<UpdateProfileFormData>({
+    resolver: zodResolver(updateProfileSchema),
+    defaultValues: {
+      name: user?.displayName || '',
+    }
+  });
+
+  const fallbackImage = `https://ui-avatars.com/api/?name=${user?.displayName || 'User'}&background=7aa2f7&color=1a1b26`;
+  const displayImage = photoPreview || fallbackImage;
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setPhotoFile(file);
+      setPhotoPreview(URL.createObjectURL(file));
+      setRemovePhoto(false);
+    }
+  };
+
+  const handleRemovePhoto = () => {
+    setPhotoFile(null);
+    setPhotoPreview(null);
+    setRemovePhoto(true);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const onSubmit = (data: UpdateProfileFormData) => {
+    updateMutation.mutate({ name: data.name, photoFile, removePhoto });
+  };
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#1a1b26] p-4 text-zinc-50">
+      
+      <div className="mb-4 w-full max-w-md">
+        <Link to="/dashboard" className="flex w-fit items-center gap-2 text-[#7aa2f7] transition-colors hover:text-[#8db0f8] hover:underline">
+          <ArrowLeft className="h-4 w-4" />
+          {t('edit_profile.button_back')}
+        </Link>
+      </div>
+
+      <GlowCard glowColor="blue" customSize className="w-full max-w-md bg-[#24283b]/50">
+        <div className="p-6">
+          <h1 className="mb-6 text-2xl font-bold text-white text-center">{t('edit_profile.title')}</h1>
+          
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+            
+            <div className="flex flex-col items-center gap-2">
+              <div 
+                className="relative h-24 w-24 cursor-pointer overflow-hidden rounded-full border-2 border-[#7aa2f7] shadow-lg transition-transform hover:scale-105"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <img src={displayImage} alt="Profile Preview" className="h-full w-full object-cover" />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity hover:opacity-100">
+                  <Camera className="h-6 w-6 text-white" />
+                </div>
+              </div>
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleImageChange} 
+                accept="image/*" 
+                className="hidden" 
+              />
+              <div className="mt-2 flex gap-4 text-xs font-medium">
+                <button 
+                  type="button"
+                  className="cursor-pointer text-[#c0caf5] transition-colors hover:text-[#7aa2f7] hover:underline"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {t('edit_profile.change_photo')}
+                </button>
+                
+                <button 
+                  type="button"
+                  disabled={!user?.photoURL && !photoPreview}
+                  onClick={handleRemovePhoto}
+                  className="text-[#f7768e] transition-colors hover:text-[#ff8c9a] hover:underline disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:no-underline cursor-pointer"
+                >
+                  {t('edit_profile.remove_photo')}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-[#c0caf5]">{t('dashboard.name')}</label>
+              <input 
+                {...register('name')}
+                disabled={updateMutation.isPending}
+                className="w-full rounded-md border border-[#414868] bg-[#1a1b26] p-2 text-white outline-none transition-all focus:border-[#7aa2f7] focus:ring-1 focus:ring-[#7aa2f7] disabled:opacity-50"
+              />
+              {errors.name && <span className="mt-1 text-sm text-[#f7768e]">{errors.name.message}</span>}
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-[#c0caf5]">{t('dashboard.email')}</label>
+              <input 
+                type="email"
+                value={user?.email || ''}
+                disabled
+                className="w-full rounded-md border border-[#414868] bg-[#1a1b26] p-2 text-white opacity-60 outline-none cursor-not-allowed"
+              />
+            </div>
+
+            <button 
+              type="submit"
+              disabled={updateMutation.isPending}
+              className="mt-4 flex w-full items-center justify-center rounded-md bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] py-2.5 font-bold text-[#1a1b26] shadow-lg shadow-[#7aa2f7]/20 transition-all duration-300 hover:opacity-85 hover:shadow-[#7aa2f7]/40 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+            >
+              {updateMutation.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  {t('edit_profile.loading')}
+                </>
+              ) : (
+                t('edit_profile.button_save')
+              )}
+            </button>
+          </form>
+
+          <div className="mt-8 border-t border-[#414868] pt-6">
+            <button 
+              onClick={() => setIsDeleteModalOpen(true)}
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#f7768e] bg-transparent py-2.5 font-bold text-[#f7768e] transition-all hover:bg-[#f7768e]/10 cursor-pointer"
+            >
+              <Trash2 className="h-4 w-4" />
+              {t('edit_profile.button_delete')}
+            </button>
+          </div>
+        </div>
+      </GlowCard>
+
+      <Modal 
+        isOpen={isDeleteModalOpen} 
+        onClose={() => setIsDeleteModalOpen(false)} 
+        title={t('modals.delete_account.title')}
+      >
+        <p className="mb-6 text-sm text-[#c0caf5]">{t('modals.delete_account.description')}</p>
+        <div className="flex gap-3">
+          <button 
+            onClick={() => setIsDeleteModalOpen(false)}
+            className="flex-1 rounded-md bg-[#1f2335] py-2 font-medium text-white transition-colors hover:bg-[#292e42]"
+          >
+            {t('modals.delete_account.cancel')}
+          </button>
+          <button 
+            onClick={() => deleteMutation.mutate()}
+            disabled={deleteMutation.isPending}
+            className="flex-1 flex items-center justify-center rounded-md bg-[#f7768e] py-2 font-medium text-white transition-colors hover:bg-[#ff8c9a] disabled:opacity-70"
+          >
+            {deleteMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : t('modals.delete_account.confirm')}
+          </button>
+        </div>
+      </Modal>
+    </div>
+  );
+}
