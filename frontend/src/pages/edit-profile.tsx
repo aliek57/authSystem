@@ -11,6 +11,9 @@ import { GlowCard } from '../components/glow-card';
 import { Modal } from '../components/modal';
 import { Loader } from '../components/loader';
 import { PasswordInput } from '../components/password-input';
+import { AnimatedPage } from '../components/animated-page';
+import { motion } from 'framer-motion';
+import { AnimatedForm } from '../components/animated-form';
 
 export function EditProfile() {
   const { t } = useTranslation();
@@ -78,12 +81,12 @@ export function EditProfile() {
           {t('edit_profile.button_back')}
         </Link>
       </div>
-
+      <AnimatedPage className="w-full max-w-md">
       <GlowCard glowColor="blue" customSize className="w-full max-w-md bg-white dark:bg-[#24283b]/50">
         <div className="p-6">
           <h1 className="mb-6 text-2xl font-bold text-zinc-900 dark:text-white text-center">{t('edit_profile.title')}</h1>
           
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <AnimatedForm onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             
             <div className="flex flex-col items-center gap-2">
               <div 
@@ -160,23 +163,27 @@ export function EditProfile() {
               />
               {errors.confirm_password && <span className="mt-1 text-sm text-[#f7768e]">{errors.confirm_password.message}</span>}
             </div>
-            <button 
+            <motion.button 
               type="submit"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               disabled={updateMutation.isPending}
               className="mt-4 flex w-full items-center justify-center rounded-md bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] py-2.5 font-bold text-[#1a1b26] shadow-lg shadow-[#7aa2f7]/20 transition-all duration-300 hover:opacity-85 hover:shadow-[#7aa2f7]/40 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
             >
               {t('edit_profile.button_save')}
-            </button>
-          </form>
+            </motion.button>
+          </AnimatedForm>
 
           <div className="mt-8 border-t border-zinc-300 dark:border-[#414868] pt-6">
-            <button 
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }} 
               onClick={() => setIsDeleteModalOpen(true)}
               className="flex w-full items-center justify-center gap-2 rounded-md border border-[#f7768e] bg-transparent py-2.5 font-bold text-[#f7768e] transition-all hover:bg-[#f7768e]/10 cursor-pointer"
             >
               <Trash2 className="h-4 w-4" />
               {t('edit_profile.button_delete')}
-            </button>
+            </motion.button>
           </div>
         </div>
       </GlowCard>
@@ -216,6 +223,7 @@ export function EditProfile() {
           </button>
         </div>
       </Modal>
+      </AnimatedPage>
     </div>
   );
 }

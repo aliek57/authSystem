@@ -7,6 +7,9 @@ import { GlowCard } from '../components/glow-card';
 import { useRegisterMutation } from '../hooks/use-auth-mutations';
 import { Loader } from '../components/loader';
 import { PasswordInput } from '../components/password-input';
+import { AnimatedPage } from '../components/animated-page';
+import { motion } from 'framer-motion';
+import { AnimatedForm } from '../components/animated-form';
 
 export function Register() {
   const { t } = useTranslation();
@@ -36,11 +39,12 @@ export function Register() {
         isLoading={registerMutation.isPending} 
         text={t('register.loading')} 
       />
+      <AnimatedPage className="w-full max-w-md">
       <GlowCard glowColor="purple" customSize className="w-full max-w-md bg-white dark:bg-[#24283b]/50">
         <div className="p-4">
           <h1 className="mb-6 text-2xl font-bold text-zinc-900 dark:text-white text-center">{t('register.title')}</h1>
           
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <AnimatedForm onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <div>
               <label className="mb-1 block text-sm font-medium text-zinc-500 dark:text-[#c0caf5]">Nome</label>
               <input 
@@ -80,20 +84,23 @@ export function Register() {
               {errors.confirm_password && <span className="mt-1 text-sm text-[#f7768e]">{errors.confirm_password.message}</span>}
             </div>
 
-            <button 
+            <motion.button 
               type="submit"
               disabled={registerMutation.isPending}
               className="mt-4 flex w-full items-center justify-center rounded-md bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] py-2.5 font-bold text-[#1a1b26] shadow-lg shadow-[#7aa2f7]/20 transition-all duration-300 hover:opacity-85 hover:shadow-[#7aa2f7]/40 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               {t('register.button')}
-            </button>
-          </form>
+            </motion.button>
+          </AnimatedForm>
           
           <div className="mt-6 text-center text-sm text-zinc-500 dark:text-[#c0caf5]">
             {t('register.text')} <Link to="/login" className="text-[#7aa2f7] hover:underline"> {t('register.redirect_login')} </Link>
           </div>
         </div>
       </GlowCard>
+      </AnimatedPage>
     </div>
   );
 }
