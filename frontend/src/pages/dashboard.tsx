@@ -17,31 +17,31 @@ export function Dashboard() {
   const profileImage = user?.photoURL || `https://ui-avatars.com/api/?name=${user?.displayName || 'User'}&background=7aa2f7&color=1a1b26`;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#1a1b26] p-4 text-zinc-50">
-      <GlowCard glowColor="purple" customSize className="w-full max-w-md bg-[#24283b]/50">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 text-zinc-900 dark:bg-[#1a1b26] dark:text-zinc-50 p-4">
+      <GlowCard glowColor="purple" customSize className="w-full max-w-md bg-white dark:bg-[#24283b]/50">
         <div className="flex flex-col items-center p-6 text-center">
           
           <div className="mb-4 h-24 w-24 overflow-hidden rounded-full border-2 border-[#7aa2f7] shadow-lg shadow-[#7aa2f7]/20">
             <img src={profileImage} alt="Profile" className="h-full w-full object-cover" />
           </div>
 
-          <h1 className="mb-1 text-2xl font-bold text-white">{user?.displayName || 'Usuário'}</h1>
-          <p className="mb-8 text-sm text-[#c0caf5]">{t('dashboard.title')}</p>
+          <h1 className="mb-1 text-2xl font-bold text-zinc-900 dark:text-white">{user?.displayName || 'Usuário'}</h1>
+          <p className="mb-8 text-sm text-zinc-500 dark:text-[#c0caf5]">{t('dashboard.title')}</p>
 
           <div className="w-full space-y-4 text-left">
-            <div className="flex items-center gap-3 rounded-md bg-[#1f2335] p-3 border border-[#414868]">
+            <div className="flex items-center gap-3 rounded-md bg-zinc-100 dark:bg-[#1f2335] p-3 border border-zinc-300 dark:border-[#414868]">
               <User className="h-5 w-5 text-[#7aa2f7]" />
               <div>
-                <p className="text-xs text-[#c0caf5]">{t('dashboard.name')}</p>
-                <p className="text-sm font-medium text-white">{user?.displayName || 'Não informado'}</p>
+                <p className="text-xs text-zinc-500 dark:text-[#c0caf5]">{t('dashboard.name')}</p>
+                <p className="text-sm font-medium text-zinc-900 dark:text-white">{user?.displayName || 'Não informado'}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 rounded-md bg-[#1f2335] p-3 border border-[#414868]">
+            <div className="flex items-center gap-3 rounded-md bg-zinc-100 dark:bg-[#1f2335] p-3 border border-zinc-300 dark:border-[#414868]">
               <Mail className="h-5 w-5 text-[#7aa2f7]" />
               <div>
-                <p className="text-xs text-[#c0caf5]">{t('dashboard.email')}</p>
-                <p className="text-sm font-medium text-white">{user?.email}</p>
+                <p className="text-xs text-zinc-500 dark:text-[#c0caf5]">{t('dashboard.email')}</p>
+                <p className="text-sm font-medium text-zinc-900 dark:text-white">{user?.email}</p>
               </div>
             </div>
           </div>
@@ -49,7 +49,7 @@ export function Dashboard() {
           <div className="mt-8 flex w-full flex-col gap-3">
             <button 
               onClick={() => navigate('/edit-profile')}
-              className="flex w-full items-center justify-center gap-2 rounded-md bg-[#7aa2f7] py-2.5 font-bold text-[#1a1b26] transition-all hover:bg-[#8db0f8] cursor-pointer"
+              className="flex w-full items-center justify-center gap-2 rounded-md bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] py-2.5 font-bold text-[#1a1b26] transition-all hover:bg-[#8db0f8] cursor-pointer"
             >
               <Edit2 className="h-4 w-4" />
               {t('dashboard.button_edit')}
@@ -71,11 +71,11 @@ export function Dashboard() {
         onClose={() => setIsLogoutModalOpen(false)} 
         title={t('modals.logout.title')}
       >
-        <p className="mb-6 text-sm text-[#c0caf5]">{t('modals.logout.description')}</p>
+        <p className="mb-6 text-sm text-zinc-500 dark:text-[#c0caf5]">{t('modals.logout.description')}</p>
         <div className="flex gap-3">
           <button 
             onClick={() => setIsLogoutModalOpen(false)}
-            className="flex-1 rounded-md bg-[#1f2335] py-2 font-medium text-white transition-colors hover:bg-[#292e42] cursor-pointer"
+            className="flex-1 rounded-md bg-zinc-200 dark:bg-[#1f2335] py-2 font-medium text-zinc-900 dark:text-white transition-colors hover:bg-zinc-300 dark:hover:bg-[#292e42] cursor-pointer"
           >
             {t('modals.logout.cancel')}
           </button>

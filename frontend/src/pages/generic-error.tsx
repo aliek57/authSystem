@@ -8,16 +8,16 @@ export function GenericError() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#1a1b26] p-4 text-zinc-50">
-      <GlowCard glowColor="red" customSize className="w-full max-w-md bg-[#24283b]/50">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 text-zinc-900 dark:bg-[#1a1b26] dark:text-zinc-50 p-4">
+      <GlowCard glowColor="red" customSize className="w-full max-w-md bg-white dark:bg-[#24283b]/50">
         <div className="flex flex-col items-center p-6 text-center">
           
           <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#f7768e]/10 shadow-lg shadow-[#f7768e]/20">
             <ServerCrash className="h-10 w-10 text-[#f7768e]" />
           </div>
 
-          <h1 className="mb-2 text-2xl font-bold text-white">{t('generic_error.title')}</h1>
-          <p className="mb-8 text-sm text-[#c0caf5]">
+          <h1 className="mb-2 text-2xl font-bold text-zinc-900 dark:text-white">{t('generic_error.title')}</h1>
+          <p className="mb-8 text-sm text-zinc-500 dark:text-[#c0caf5]">
             {t('generic_error.description')}
           </p>
 

@@ -67,21 +67,21 @@ export function EditProfile() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#1a1b26] p-4 text-zinc-50">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 text-zinc-900 dark:bg-[#1a1b26] dark:text-zinc-50 p-4">
       <Loader 
         isLoading={updateMutation.isPending || deleteMutation.isPending} 
         text={updateMutation.isPending ? t('edit_profile.loading') : t('modals.delete_account.loading')} 
       />
       <div className="mb-4 w-full max-w-md">
-        <Link to="/dashboard" className="flex w-fit items-center gap-2 text-[#7aa2f7] transition-colors hover:text-[#8db0f8] hover:underline">
+        <Link to="/dashboard" className="flex w-fit items-center gap-2 text-[#7aa2f7] transition-colors hover:text-zinc-900 dark:hover:text-[#8db0f8] hover:underline">
           <ArrowLeft className="h-4 w-4" />
           {t('edit_profile.button_back')}
         </Link>
       </div>
 
-      <GlowCard glowColor="blue" customSize className="w-full max-w-md bg-[#24283b]/50">
+      <GlowCard glowColor="blue" customSize className="w-full max-w-md bg-white dark:bg-[#24283b]/50">
         <div className="p-6">
-          <h1 className="mb-6 text-2xl font-bold text-white text-center">{t('edit_profile.title')}</h1>
+          <h1 className="mb-6 text-2xl font-bold text-zinc-900 dark:text-white text-center">{t('edit_profile.title')}</h1>
           
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             
@@ -105,7 +105,7 @@ export function EditProfile() {
               <div className="mt-2 flex gap-4 text-xs font-medium">
                 <button 
                   type="button"
-                  className="cursor-pointer text-[#c0caf5] transition-colors hover:text-[#7aa2f7] hover:underline"
+                  className="cursor-pointer text-zinc-500 dark:text-[#c0caf5] transition-colors hover:text-zinc-900 dark:hover:text-[#7aa2f7] hover:underline"
                   onClick={() => fileInputRef.current?.click()}
                 >
                   {t('edit_profile.change_photo')}
@@ -123,28 +123,28 @@ export function EditProfile() {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#c0caf5]">{t('dashboard.name')}</label>
+              <label className="mb-1 block text-sm font-medium text-zinc-500 dark:text-[#c0caf5]">{t('dashboard.name')}</label>
               <input 
                 {...register('name')}
                 disabled={updateMutation.isPending}
-                className="w-full rounded-md border border-[#414868] bg-[#1a1b26] p-2 text-white outline-none transition-all focus:border-[#7aa2f7] focus:ring-1 focus:ring-[#7aa2f7] disabled:opacity-50"
+                className="w-full rounded-md border border-zinc-300 dark:border-[#414868] bg-white dark:bg-[#1a1b26] p-2 text-zinc-900 dark:text-white outline-none transition-all focus:border-[#7aa2f7] focus:ring-1 focus:ring-[#7aa2f7] disabled:opacity-50"
               />
               {errors.name && <span className="mt-1 text-sm text-[#f7768e]">{errors.name.message}</span>}
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#c0caf5]">{t('dashboard.email')}</label>
+              <label className="mb-1 block text-sm font-medium text-zinc-500 dark:text-[#c0caf5]">{t('dashboard.email')}</label>
               <input 
                 {...register('email')}
                 type="email"
                 disabled={updateMutation.isPending}
-                className="w-full rounded-md border border-[#414868] bg-[#1a1b26] p-2 text-white outline-none transition-all focus:border-[#7aa2f7] focus:ring-1 focus:ring-[#7aa2f7] disabled:opacity-50"
+                className="w-full rounded-md border border-zinc-300 dark:border-[#414868] bg-white dark:bg-[#1a1b26] p-2 text-zinc-900 dark:text-white outline-none transition-all focus:border-[#7aa2f7] focus:ring-1 focus:ring-[#7aa2f7] disabled:opacity-50"
               />
               {errors.email && <span className="mt-1 text-sm text-[#f7768e]">{errors.email.message}</span>}
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#c0caf5]">{t('edit_profile.password')}</label>
+              <label className="mb-1 block text-sm font-medium text-zinc-500 dark:text-[#c0caf5]">{t('edit_profile.password')}</label>
               <PasswordInput 
                 {...register('password')}
                 disabled={updateMutation.isPending}
@@ -153,7 +153,7 @@ export function EditProfile() {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#c0caf5]">{t('edit_profile.confirm_password')}</label>
+              <label className="mb-1 block text-sm font-medium text-zinc-500 dark:text-[#c0caf5]">{t('edit_profile.confirm_password')}</label>
               <PasswordInput 
                 {...register('confirm_password')}
                 disabled={updateMutation.isPending}
@@ -169,7 +169,7 @@ export function EditProfile() {
             </button>
           </form>
 
-          <div className="mt-8 border-t border-[#414868] pt-6">
+          <div className="mt-8 border-t border-zinc-300 dark:border-[#414868] pt-6">
             <button 
               onClick={() => setIsDeleteModalOpen(true)}
               className="flex w-full items-center justify-center gap-2 rounded-md border border-[#f7768e] bg-transparent py-2.5 font-bold text-[#f7768e] transition-all hover:bg-[#f7768e]/10 cursor-pointer"
@@ -189,7 +189,7 @@ export function EditProfile() {
         }} 
         title={t('modals.delete_account.title')}
       >
-        <p className="mb-4 text-sm text-[#c0caf5]">{t('modals.delete_account.description')}</p>
+        <p className="mb-4 text-sm text-zinc-500 dark:text-[#c0caf5]">{t('modals.delete_account.description')}</p>
         
         <PasswordInput 
           placeholder={t('modals.delete_account.password_placeholder')}
@@ -203,7 +203,7 @@ export function EditProfile() {
               setIsDeleteModalOpen(false);
               setDeletePassword('');
             }}
-            className="flex-1 rounded-md bg-[#1f2335] py-2 font-medium text-white transition-colors hover:bg-[#292e42] cursor-pointer"
+            className="flex-1 rounded-md bg-zinc-200 dark:bg-[#1f2335] py-2 font-medium text-zinc-900 dark:text-white transition-colors hover:bg-zinc-300 dark:hover:bg-[#292e42] cursor-pointer"
           >
             {t('modals.delete_account.cancel')}
           </button>

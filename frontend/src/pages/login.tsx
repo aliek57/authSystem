@@ -31,23 +31,23 @@ export function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#1a1b26] text-zinc-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 text-zinc-900 dark:bg-[#1a1b26] dark:text-zinc-50 p-4">
         <Loader
             isLoading={loginMutation.isPending}
             text={t('login.loading')}
         />
-      <GlowCard glowColor="purple" customSize className="w-full max-w-md bg-[#24283b]/50">
+      <GlowCard glowColor="purple" customSize className="w-full max-w-md bg-white dark:bg-[#24283b]/50">
         <div className="p-4">
-          <h1 className="mb-6 text-2xl font-bold text-white text-center">{t('login.title')}</h1>
+          <h1 className="mb-6 text-2xl font-bold text-zinc-900 dark:text-white text-center">{t('login.title')}</h1>
           
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#c0caf5]">{t('login.email')}</label>
+              <label className="mb-1 block text-sm font-medium text-zinc-500 dark:text-[#c0caf5]">{t('login.email')}</label>
               <input 
                 {...register('email')}
                 type="email"
                 disabled={loginMutation.isPending}
-                className="w-full rounded-md border border-[#414868] bg-[#1a1b26] p-2 text-white outline-none transition-all focus:border-[#7aa2f7] focus:ring-1 focus:ring-[#7aa2f7] disabled:opacity-50"
+                className="w-full rounded-md border border-zinc-300 dark:border-[#414868] bg-white dark:bg-[#1a1b26] p-2 text-zinc-900 dark:text-white outline-none transition-all focus:border-[#7aa2f7] focus:ring-1 focus:ring-[#7aa2f7] disabled:opacity-50"
               />
               {errors.email && (
                 <span className="mt-1 text-sm text-[#f7768e]">{errors.email.message}</span>
@@ -55,7 +55,7 @@ export function Login() {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#c0caf5]">{t('login.password')}</label>
+              <label className="mb-1 block text-sm font-medium text-zinc-500 dark:text-[#c0caf5]">{t('login.password')}</label>
               <PasswordInput 
                 {...register('password')}
                 disabled={loginMutation.isPending}
@@ -73,7 +73,7 @@ export function Login() {
              {t('login.button')}
             </button>
           </form>
-            <div className="mt-6 text-center text-sm text-[#c0caf5]">
+            <div className="mt-6 text-center text-sm text-zinc-500 dark:text-[#c0caf5]">
                 {t('login.text')} <Link to="/register" className="text-[#7aa2f7] hover:underline"> {t('login.redirect_register')} </Link>
             </div>
         </div>
