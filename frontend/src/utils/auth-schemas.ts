@@ -18,7 +18,18 @@ export const getAuthSchemas = (t: TFunction) => {
   });
 
   const updateProfileSchema = z.object({
-    name: z.string().min(3, { message: t('validation.name') }),
+    name: z.string().min(3, { message: t('validation.name') }).optional().or(z.literal('')),
+    email: z.string().email(t('validation.email')).optional().or(z.literal('')),
+    password: z.string().min(6, { message: t('validation.password') }).optional().or(z.literal('')),
+    confirm_password: z.string().optional().or(z.literal('')),
+  }).refine((data) => {
+    if (data.password && data.password !== '') {
+      return data.password === data.confirm_password;
+    }
+    return true;
+  }, {
+    message: t('validation.confirm_password'),
+    path: ["confirm_password"],
   });
 
   return { loginSchema, registerSchema, updateProfileSchema };

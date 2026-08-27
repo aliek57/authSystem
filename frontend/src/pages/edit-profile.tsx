@@ -2,28 +2,27 @@ import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, Link } from 'react-router-dom';
-import { Camera, Trash2, ArrowLeft, Loader2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Camera, Trash2, ArrowLeft } from 'lucide-react';
 import { getAuthSchemas, type UpdateProfileFormData } from '../utils/auth-schemas';
 import { useAuth } from '../hooks/use-auth';
 import { useUpdateProfileMutation, useDeleteAccountMutation } from '../hooks/use-auth-mutations';
 import { GlowCard } from '../components/glow-card';
 import { Modal } from '../components/modal';
+import { Loader } from '../components/loader';
+import { PasswordInput } from '../components/password-input';
 
 export function EditProfile() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { user } = useAuth();
   const { updateProfileSchema } = getAuthSchemas(t);
-  
   const updateMutation = useUpdateProfileMutation();
   const deleteMutation = useDeleteAccountMutation();
-
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(user?.photoURL || null);
   const [removePhoto, setRemovePhoto] = useState(false);
-  
+  const [deletePassword, setDeletePassword] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { 
@@ -34,6 +33,7 @@ export function EditProfile() {
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
       name: user?.displayName || '',
+      email: user?.email || '',
     }
   });
 
@@ -57,12 +57,21 @@ export function EditProfile() {
   };
 
   const onSubmit = (data: UpdateProfileFormData) => {
-    updateMutation.mutate({ name: data.name, photoFile, removePhoto });
+    updateMutation.mutate({ 
+      name: data.name || user?.displayName || '', 
+      email: data.email, 
+      password: data.password, 
+      photoFile, 
+      removePhoto 
+    });
   };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#1a1b26] p-4 text-zinc-50">
-      
+      <Loader 
+        isLoading={updateMutation.isPending || deleteMutation.isPending} 
+        text={updateMutation.isPending ? t('edit_profile.loading') : t('modals.delete_account.loading')} 
+      />
       <div className="mb-4 w-full max-w-md">
         <Link to="/dashboard" className="flex w-fit items-center gap-2 text-[#7aa2f7] transition-colors hover:text-[#8db0f8] hover:underline">
           <ArrowLeft className="h-4 w-4" />
@@ -126,26 +135,37 @@ export function EditProfile() {
             <div>
               <label className="mb-1 block text-sm font-medium text-[#c0caf5]">{t('dashboard.email')}</label>
               <input 
+                {...register('email')}
                 type="email"
-                value={user?.email || ''}
-                disabled
-                className="w-full rounded-md border border-[#414868] bg-[#1a1b26] p-2 text-white opacity-60 outline-none cursor-not-allowed"
+                disabled={updateMutation.isPending}
+                className="w-full rounded-md border border-[#414868] bg-[#1a1b26] p-2 text-white outline-none transition-all focus:border-[#7aa2f7] focus:ring-1 focus:ring-[#7aa2f7] disabled:opacity-50"
               />
+              {errors.email && <span className="mt-1 text-sm text-[#f7768e]">{errors.email.message}</span>}
             </div>
 
+            <div>
+              <label className="mb-1 block text-sm font-medium text-[#c0caf5]">{t('edit_profile.password')}</label>
+              <PasswordInput 
+                {...register('password')}
+                disabled={updateMutation.isPending}
+              />
+              {errors.password && <span className="mt-1 text-sm text-[#f7768e]">{errors.password.message}</span>}
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-[#c0caf5]">{t('edit_profile.confirm_password')}</label>
+              <PasswordInput 
+                {...register('confirm_password')}
+                disabled={updateMutation.isPending}
+              />
+              {errors.confirm_password && <span className="mt-1 text-sm text-[#f7768e]">{errors.confirm_password.message}</span>}
+            </div>
             <button 
               type="submit"
               disabled={updateMutation.isPending}
               className="mt-4 flex w-full items-center justify-center rounded-md bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] py-2.5 font-bold text-[#1a1b26] shadow-lg shadow-[#7aa2f7]/20 transition-all duration-300 hover:opacity-85 hover:shadow-[#7aa2f7]/40 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
             >
-              {updateMutation.isPending ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  {t('edit_profile.loading')}
-                </>
-              ) : (
-                t('edit_profile.button_save')
-              )}
+              {t('edit_profile.button_save')}
             </button>
           </form>
 
@@ -163,23 +183,36 @@ export function EditProfile() {
 
       <Modal 
         isOpen={isDeleteModalOpen} 
-        onClose={() => setIsDeleteModalOpen(false)} 
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setDeletePassword('');
+        }} 
         title={t('modals.delete_account.title')}
       >
-        <p className="mb-6 text-sm text-[#c0caf5]">{t('modals.delete_account.description')}</p>
-        <div className="flex gap-3">
+        <p className="mb-4 text-sm text-[#c0caf5]">{t('modals.delete_account.description')}</p>
+        
+        <PasswordInput 
+          placeholder={t('modals.delete_account.password_placeholder')}
+          value={deletePassword}
+          onChange={(e) => setDeletePassword(e.target.value)}
+        />
+
+        <div className="flex gap-3 mt-6">
           <button 
-            onClick={() => setIsDeleteModalOpen(false)}
-            className="flex-1 rounded-md bg-[#1f2335] py-2 font-medium text-white transition-colors hover:bg-[#292e42]"
+            onClick={() => {
+              setIsDeleteModalOpen(false);
+              setDeletePassword('');
+            }}
+            className="flex-1 rounded-md bg-[#1f2335] py-2 font-medium text-white transition-colors hover:bg-[#292e42] cursor-pointer"
           >
             {t('modals.delete_account.cancel')}
           </button>
           <button 
-            onClick={() => deleteMutation.mutate()}
-            disabled={deleteMutation.isPending}
-            className="flex-1 flex items-center justify-center rounded-md bg-[#f7768e] py-2 font-medium text-white transition-colors hover:bg-[#ff8c9a] disabled:opacity-70"
+            onClick={() => deleteMutation.mutate(deletePassword)}
+            disabled={deleteMutation.isPending || !deletePassword}
+            className="flex-1 flex items-center justify-center rounded-md bg-[#f7768e] py-2 font-medium text-white transition-colors hover:bg-[#ff8c9a] cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            {deleteMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : t('modals.delete_account.confirm')}
+            {t('modals.delete_account.confirm')}
           </button>
         </div>
       </Modal>

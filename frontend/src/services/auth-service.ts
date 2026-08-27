@@ -2,8 +2,12 @@ import {
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
   updateProfile,
+  updateEmail,
+  updatePassword,
   signOut,
-  deleteUser
+  deleteUser,
+  EmailAuthProvider,
+  reauthenticateWithCredential
 } from 'firebase/auth';
 import { firebaseAuth } from './firebase';
 import type { LoginFormData, RegisterFormData } from '../utils/auth-schemas';
@@ -23,12 +27,20 @@ export const authService = {
     return response.user;
   },
 
-  async updateProfile({ name, photoFile, removePhoto }: { name: string; photoFile: File | null; removePhoto?: boolean }) {
+  async updateProfile({ name, email, password, photoFile, removePhoto }: { name: string; email?: string; password?: string; photoFile: File | null; removePhoto?: boolean }) {
     const user = firebaseAuth.currentUser;
     if (!user) throw new Error("No user logged in");
 
+    if (email && email !== user.email) {
+      await updateEmail(user, email);
+    }
+    if (password && password.trim() !== '') {
+      await updatePassword(user, password);
+    }
+
     const formData = new FormData();
     formData.append('name', name);
+    if (email) formData.append('email', email);
     if (photoFile) {
       formData.append('photo', photoFile);
     }
@@ -38,7 +50,6 @@ export const authService = {
 
     const response = await api.put('/api/profile', formData);
     const { photoUrl } = response.data;
-
     const updatedPhotoURL = removePhoto ? "" : (photoUrl || user.photoURL);
 
     await updateProfile(user, { 
@@ -54,9 +65,12 @@ export const authService = {
     await signOut(firebaseAuth);
   },
 
-  async deleteAccount() {
+  async deleteAccount(password: string) {
     const user = firebaseAuth.currentUser;
-    if (!user) throw new Error("No user logged in");
+    if (!user || !user.email) throw new Error("No user logged in");
+    const credential = EmailAuthProvider.credential(user.email, password);
+    
+    await reauthenticateWithCredential(user, credential);
     await deleteUser(user);
   }
 };

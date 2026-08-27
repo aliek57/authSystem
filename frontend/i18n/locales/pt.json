@@ -16,7 +16,7 @@
         "button": "Entrar",
         "text": "Não tem uma conta? ",
         "redirect_register": "Cadastre-se aqui",
-        "loading": "Carregando..."
+        "loading": "Carregando informações..."
     },
     "register": {
         "title": "Página de Registro",
@@ -25,7 +25,7 @@
         "button": "Registrar",
         "text": "Já tem uma conta? ",
         "redirect_login": "Entre aqui",
-        "loading": "Carregando..."
+        "loading": "Carregando informações..."
     },
     "validation": {
         "email": "Por favor, insira um e-mail válido.",
@@ -43,7 +43,9 @@
         "logout_success": "Você saiu da conta.",
         "delete_success": "Conta excluída permanentemente.",
         "update_success": "Perfil atualizado com sucesso!",
-        "error_generic": "Ocorreu um erro no servidor."
+        "error_generic": "Ocorreu um erro no servidor.",
+        "invalid_credentials_error": "E-mail ou senha incorretos.",
+        "email_already_in_use_error": "O e-mail já está em uso."
     },
     "modals": {
         "logout": {
@@ -56,11 +58,15 @@
             "title": "Tem certeza que deseja excluir sua conta?",
             "description": "Esta ação é irreversível e todos os seus dados serão perdidos.",
             "confirm": "Excluir",
-            "cancel": "Cancelar"
+            "cancel": "Cancelar",
+            "password_placeholder": "Digite sua senha para confirmar",
+            "loading": "Excluindo conta..."
         }
     },
     "edit_profile": {
         "title": "Editar Perfil",
+        "password": "Nova Senha",
+        "confirm_password": "Confirmar Nova Senha",
         "change_photo": "Alterar Foto",
         "remove_photo": "Remover Foto",
         "button_save": "Salvar Alterações",

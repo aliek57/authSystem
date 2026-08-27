@@ -15,7 +15,12 @@ export function useLoginMutation() {
       navigate('/dashboard');
     },
     onError: (error: any) => {
-      toast.error(error.message || t('notifications.error_generic'));
+      if (error.message.includes('auth/invalid-credential')) {
+        toast.error(t('notifications.invalid_credentials_error'));
+      } else {
+        toast.error(t('notifications.error_generic'));
+        navigate('/error');
+      }
     }
   });
 }
@@ -31,7 +36,12 @@ export function useRegisterMutation() {
       navigate('/dashboard');
     },
     onError: (error: any) => {
-      toast.error(error.message || t('notifications.error_generic'));
+      if (error.message.includes('auth/email-already-in-use')) {
+        toast.error(t('notifications.email_already_in_use_error'));
+      } else {
+        toast.error(t('notifications.error_generic'));
+        navigate('/error');
+      }
     }
   });
 }
@@ -48,6 +58,7 @@ export function useLogoutMutation() {
     },
     onError: () => {
       toast.error(t('notifications.error_generic'));
+      navigate('/error');
     }
   });
 }
@@ -57,27 +68,33 @@ export function useDeleteAccountMutation() {
   const { t } = useTranslation();
 
   return useMutation({
-    mutationFn: authService.deleteAccount,
+    mutationFn: (password: string) => authService.deleteAccount(password),
     onSuccess: () => {
       toast.success(t('notifications.delete_success'));
       navigate('/login');
     },
     onError: (error: any) => {
-      toast.error(error.message || t('notifications.error_generic'));
+      if (error.message.includes('auth/wrong-password') || error.message.includes('auth/invalid-credential')) {
+        toast.error('Senha incorreta.');
+      } else {
+        toast.error(error.message || t('notifications.error_generic'));
+      }
     }
   });
 }
 
 export function useUpdateProfileMutation() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: authService.updateProfile,
     onSuccess: () => {
       toast.success(t('notifications.update_success'));
     },
-    onError: (error: any) => {
-      toast.error(error.message || t('notifications.error_generic'));
+    onError: () => {
+      toast.error(t('notifications.error_generic'));
+      navigate('/error');
     }
   });
 }
