@@ -2,7 +2,7 @@ import axios from 'axios';
 import { firebaseAuth } from './firebase';
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3333',
+  baseURL: 'https://authsystem-6apm.onrender.com',
 });
 
 api.interceptors.request.use(async (config) => {
