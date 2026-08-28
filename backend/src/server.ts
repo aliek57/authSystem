@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3333;
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: 'https://auth-system-dun-one.vercel.app/' }));
 app.use(express.json());
 
 mongoose
