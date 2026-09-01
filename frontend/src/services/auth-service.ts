@@ -27,9 +27,14 @@ export const authService = {
     return response.user;
   },
 
-  async updateProfile({ name, email, password, photoFile, removePhoto }: { name: string; email?: string; password?: string; photoFile: File | null; removePhoto?: boolean }) {
+  async updateProfile({ name, email, password, photoFile, removePhoto, current_password }: { name: string; email?: string; password?: string; photoFile: File | null; removePhoto?: boolean; current_password?: string }) {
     const user = firebaseAuth.currentUser;
     if (!user) throw new Error("No user logged in");
+
+    if (current_password && user.email) {
+      const credential = EmailAuthProvider.credential(user.email, current_password);
+      await reauthenticateWithCredential(user, credential);
+    }
 
     if (email && email !== user.email) {
       await updateEmail(user, email);

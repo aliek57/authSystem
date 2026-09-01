@@ -44,7 +44,9 @@
         "update_success": "Perfil atualizado com sucesso!",
         "error_generic": "Ocorreu um erro no servidor.",
         "invalid_credentials_error": "E-mail ou senha incorretos.",
-        "email_already_in_use_error": "O e-mail já está em uso."
+        "email_already_in_use_error": "O e-mail já está em uso.",
+        "current_password_required": "A senha atual é obrigatória para definir uma nova.",
+        "no_changes": "Nenhuma alteração foi feita no perfil."
     },
     "modals": {
         "logout": {
@@ -64,6 +66,7 @@
     },
     "edit_profile": {
         "title": "Editar Perfil",
+        "current_password": "Senha Atual",
         "password": "Nova Senha",
         "confirm_password": "Confirmar Nova Senha",
         "change_photo": "Alterar Foto",

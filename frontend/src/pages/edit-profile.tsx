@@ -14,6 +14,7 @@ import { PasswordInput } from '../components/password-input';
 import { AnimatedPage } from '../components/animated-page';
 import { motion } from 'framer-motion';
 import { AnimatedForm } from '../components/animated-form';
+import toast from 'react-hot-toast';
 
 export function EditProfile() {
   const { t } = useTranslation();
@@ -60,9 +61,20 @@ export function EditProfile() {
   };
 
   const onSubmit = (data: UpdateProfileFormData) => {
+    const isNameSame = (data.name || '') === (user?.displayName || '');
+    const isEmailSame = (data.email || '') === (user?.email || '');
+    const isPasswordEmpty = !data.password;
+    const isPhotoUnchanged = !photoFile && !removePhoto;
+
+    if (isNameSame && isEmailSame && isPasswordEmpty && isPhotoUnchanged) {
+      toast(t('notifications.no_changes'), { icon: '⚠️' });
+      return;
+    }
+
     updateMutation.mutate({ 
       name: data.name || user?.displayName || '', 
-      email: data.email, 
+      email: data.email,
+      current_password: data.current_password, 
       password: data.password, 
       photoFile, 
       removePhoto 
@@ -147,10 +159,21 @@ export function EditProfile() {
             </div>
 
             <div>
+              <label className="mb-1 block text-sm font-medium text-zinc-500 dark:text-[#c0caf5]">Senha Atual</label>
+              <PasswordInput 
+                {...register('current_password')}
+                disabled={updateMutation.isPending}
+                placeholder="******"
+                />
+              {errors.current_password && <span className="mt-1 text-sm text-[#f7768e]">{errors.current_password.message}</span>}
+            </div>
+
+            <div>
               <label className="mb-1 block text-sm font-medium text-zinc-500 dark:text-[#c0caf5]">{t('edit_profile.password')}</label>
               <PasswordInput 
                 {...register('password')}
                 disabled={updateMutation.isPending}
+                placeholder="******"
               />
               {errors.password && <span className="mt-1 text-sm text-[#f7768e]">{errors.password.message}</span>}
             </div>
@@ -160,6 +183,7 @@ export function EditProfile() {
               <PasswordInput 
                 {...register('confirm_password')}
                 disabled={updateMutation.isPending}
+                placeholder="******"
               />
               {errors.confirm_password && <span className="mt-1 text-sm text-[#f7768e]">{errors.confirm_password.message}</span>}
             </div>
