@@ -82,7 +82,7 @@ export function EditProfile() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 text-zinc-900 dark:bg-[#1a1b26] dark:text-zinc-50 p-4">
+    <div className="flex min-h-screen flex-col items-center justify-start py-10 px-4 md:justify-center bg-zinc-50 text-zinc-900 dark:bg-[#1a1b26] dark:text-zinc-50 p-4">
       <Loader 
         isLoading={updateMutation.isPending || deleteMutation.isPending} 
         text={updateMutation.isPending ? t('edit_profile.loading') : t('modals.delete_account.loading')} 
